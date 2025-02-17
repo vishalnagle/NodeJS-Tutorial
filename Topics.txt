@@ -1,0 +1,42 @@
+
+Node.js The Complete Guide By Maximilian Schwarzmüller
+
+Topics:
+
+1.Introduction
+2.Optional:Javascript Refresher
+3.Understanding The Basics
+4.Improved Development Workflow And Debugging
+5.Working With Express.js
+6.Working with Dynamic Content & Adding Templating Engines
+7.The Model View Controller (MVC)
+8.Optional:Enhancing The App
+9.Dynamic Routes & Advanced Models
+10.SQL Introduction
+11.Understanding Sequalize
+12.Working with NoSql and MongoDB
+13.Working with mangoose
+14.Sessions and cookies
+15.Adding Authentication
+16.Sending Emails
+17.Advanced Authentication
+18.Understanding Validation
+19.Error Handling
+20.File Upload & Download
+21.Adding Pagination
+22.Understanding Async Requests
+23.Adding Payments
+24.Working with REST Apis - The Basics
+25.Working with REST Apis - The Practical Application
+26.Understanding Async Await in Node.js
+27.Understanding web sockets and sockets.io 
+28.Working with GraphQL
+29.Deploying our App
+30.Testing node.js App
+31.Node.js as a Build Tool and npm
+32.Modern javascript and node.js
+33.An Introduction to Deno 
+34.Node.js and typescript
+35.Deno CRUD and Database(MongoDB)
+36.Roundup
+

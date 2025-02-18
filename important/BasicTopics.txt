@@ -1,0 +1,202 @@
+# Introduction to Node.js
+
+## What is Node.js?
+Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside the browser. 
+It is built on Chrome's V8 JavaScript engine and is commonly used to build scalable network applications.
+
+## Features and Advantages
+- **Asynchronous and Event-Driven**: Non-blocking I/O operations for high efficiency.
+- **Single-threaded but Scalable**: Uses event loops instead of threads.
+- **Fast Execution**: Built on Google’s V8 engine.
+- **Cross-Platform**: Runs on Windows, macOS, and Linux.
+- **Large Ecosystem**: Rich package management with npm.
+
+## Node.js vs JavaScript in the Browser
+- **Execution Environment**: Node.js runs on a server, while JavaScript runs in the browser.
+- **APIs**: Node.js provides access to filesystem, networking, and OS-related functionalities, which are not available in browsers.
+- **Modules**: Node.js uses CommonJS for modules, whereas browsers use ES Modules.
+
+## Node.js vs Other Backend Technologies
+- **Node.js vs PHP**: Node.js is asynchronous, while PHP is synchronous by default.
+- **Node.js vs Python**: Python is better for CPU-intensive applications, while Node.js is better for real-time apps.
+- **Node.js vs Java**: Java is more suitable for enterprise-grade applications, while Node.js is lightweight and fast for web apps.
+
+# Installation & Setup
+## Installing Node.js and npm
+Download and install Node.js from [nodejs.org](https://nodejs.org/). npm (Node Package Manager) comes bundled with Node.js.
+
+## Running Node.js scripts
+Create a file `app.js` and add:
+```javascript
+console.log("Hello, Node.js!");
+```
+Run the script using:
+```bash
+node app.js
+```
+
+## REPL (Read-Eval-Print Loop)
+Run `node` in the terminal to enter interactive mode:
+```javascript
+> console.log("Hello");
+Hello
+```
+
+# Core Modules in Node.js
+## `fs` (File System)
+```javascript
+const fs = require('fs');
+fs.writeFileSync('test.txt', 'Hello World');
+console.log(fs.readFileSync('test.txt', 'utf8'));
+```
+
+## `http` (HTTP Server)
+```javascript
+const http = require('http');
+const server = http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello, World!');
+});
+server.listen(3000);
+```
+
+## `path` (File Paths)
+```javascript
+const path = require('path');
+console.log(path.basename('/home/user/file.txt'));
+```
+
+## `os` (Operating System Info)
+```javascript
+const os = require('os');
+console.log(os.platform());
+```
+
+## `events` (Event Emitter)
+```javascript
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+emitter.on('event', () => console.log('Event triggered!'));
+emitter.emit('event');
+```
+
+## `stream` (Streams and Buffers)
+```javascript
+const fs = require('fs');
+const readStream = fs.createReadStream('test.txt');
+readStream.on('data', chunk => console.log(chunk.toString()));
+```
+
+# Node.js Package Manager (npm & yarn)
+## Installing, updating, and removing packages
+```bash
+npm install express
+npm update express
+npm uninstall express
+```
+
+## Package.json and package-lock.json
+Run `npm init -y` to create `package.json`.
+
+## Global vs Local Packages
+```bash
+npm install -g nodemon  # Global
+npm install lodash       # Local
+```
+
+# Event-Driven Architecture
+## Understanding the Event Loop
+Handles async operations using an event-driven model.
+
+## EventEmitter Class
+```javascript
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+emitter.on('message', msg => console.log(msg));
+emitter.emit('message', 'Hello World!');
+```
+
+# Working with File System (`fs` module)
+## Reading and Writing Files
+```javascript
+fs.writeFileSync('test.txt', 'Hello');
+console.log(fs.readFileSync('test.txt', 'utf8'));
+```
+
+## Synchronous vs Asynchronous Operations
+```javascript
+fs.readFile('test.txt', 'utf8', (err, data) => console.log(data));
+```
+
+# Creating a Simple HTTP Server
+## Handling Requests and Responses
+```javascript
+const http = require('http');
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World');
+});
+server.listen(3000);
+```
+
+## Serving Static Files
+Use `express.static()` in Express.js.
+
+# Modules and Import/Export
+## CommonJS vs ES Modules
+```javascript
+// CommonJS
+module.exports = { greet: () => console.log('Hello') };
+// ES Modules
+export function greet() { console.log('Hello'); }
+```
+
+## Creating Custom Modules
+```javascript
+// greet.js
+module.exports = () => console.log("Hello");
+// app.js
+const greet = require('./greet');
+greet();
+```
+
+# Asynchronous Programming in Node.js
+## Callbacks
+```javascript
+fs.readFile('test.txt', 'utf8', (err, data) => console.log(data));
+```
+
+## Promises
+```javascript
+fs.promises.readFile('test.txt', 'utf8').then(console.log);
+```
+
+## Async/Await
+```javascript
+async function readFile() {
+  const data = await fs.promises.readFile('test.txt', 'utf8');
+  console.log(data);
+}
+readFile();
+```
+
+# Error Handling in Node.js
+## Try-Catch
+```javascript
+try {
+  let result = 10 / 0;
+} catch (error) {
+  console.error(error);
+}
+```
+
+## Handling Uncaught Exceptions
+```javascript
+process.on('uncaughtException', err => console.error('Caught exception:', err));
+```
+
+## Handling Promise Rejections
+```javascript
+process.on('unhandledRejection', reason => console.error('Unhandled Rejection:', reason));
+```
+

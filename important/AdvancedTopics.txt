@@ -1,0 +1,191 @@
+
+
+# Advanced Node.js Topics
+
+## Performance Optimization
+### Caching Strategies (Redis, In-Memory)
+Caching helps speed up responses by storing frequently accessed data in memory.
+
+Example using Redis:
+```javascript
+const redis = require("redis");
+const client = redis.createClient();
+
+app.get("/data", async (req, res) => {
+    client.get("data", async (err, cachedData) => {
+        if (cachedData) return res.json(JSON.parse(cachedData));
+        const freshData = await fetchDataFromDB();
+        client.setex("data", 3600, JSON.stringify(freshData));
+        res.json(freshData);
+    });
+});
+```
+
+### Clustering & Load Balancing
+Node.js runs on a single thread but can utilize multiple cores via clustering.
+
+Example using `cluster`:
+```javascript
+const cluster = require("cluster");
+const os = require("os");
+const express = require("express");
+
+if (cluster.isMaster) {
+    const numCPUs = os.cpus().length;
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+} else {
+    const app = express();
+    app.get("/", (req, res) => res.send("Hello World!"));
+    app.listen(3000, () => console.log(`Worker ${process.pid} started`));
+}
+```
+
+## Scaling Node.js Applications
+### Using PM2 for Process Management
+PM2 ensures application uptime and auto-restarts on failure.
+```sh
+pm install pm2 -g
+pm2 start app.js -i max
+```
+
+### Horizontal & Vertical Scaling
+- **Horizontal Scaling**: Running multiple instances behind a load balancer.
+- **Vertical Scaling**: Increasing CPU/RAM for better performance.
+
+## Microservices Architecture in Node.js
+### Creating Microservices
+Microservices allow modular services with individual deployment.
+
+Example using Express:
+```javascript
+const app = require("express")();
+app.get("/users", (req, res) => res.json([{ id: 1, name: "John Doe" }]));
+app.listen(4000, () => console.log("User Service running on port 4000"));
+```
+
+### API Gateway (Express Gateway, Nginx)
+Express Gateway for API management:
+```sh
+npm install -g express-gateway
+express-gateway generate
+express-gateway start
+```
+
+### Inter-service Communication (gRPC, RabbitMQ, Kafka)
+Example of gRPC:
+```javascript
+const grpc = require("@grpc/grpc-js");
+const protoLoader = require("@grpc/proto-loader");
+const packageDefinition = protoLoader.loadSync("service.proto");
+const myService = grpc.loadPackageDefinition(packageDefinition).myService;
+```
+
+## GraphQL with Node.js
+### Setting up Apollo Server
+```javascript
+const { ApolloServer, gql } = require("apollo-server");
+const typeDefs = gql`type Query { hello: String }`;
+const resolvers = { Query: { hello: () => "Hello, GraphQL!" } };
+const server = new ApolloServer({ typeDefs, resolvers });
+server.listen().then(({ url }) => console.log(`Server ready at ${url}`));
+```
+
+## Testing in Node.js
+### Unit Testing with Jest
+```javascript
+const sum = (a, b) => a + b;
+module.exports = sum;
+```
+Test:
+```javascript
+const sum = require("./sum");
+test("adds 1 + 2 to equal 3", () => expect(sum(1, 2)).toBe(3));
+```
+
+### Integration Testing with Supertest
+```javascript
+const request = require("supertest");
+const app = require("../app");
+
+test("GET /", async () => {
+    const res = await request(app).get("/");
+    expect(res.statusCode).toEqual(200);
+});
+```
+
+## Logging & Monitoring
+### Using Winston and Morgan
+```javascript
+const winston = require("winston");
+const logger = winston.createLogger({ transports: [new winston.transports.Console()] });
+logger.info("Server started");
+```
+
+## Containerization & Deployment
+### Dockerizing Node.js Applications
+Dockerfile:
+```dockerfile
+FROM node:14
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["node", "server.js"]
+```
+
+### Kubernetes for Scaling
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-app
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+      - name: node-app
+        image: node-app-image
+```
+
+## Security Best Practices
+### Preventing SQL Injection & XSS
+Using parameterized queries:
+```javascript
+const db = require("pg");
+const query = "SELECT * FROM users WHERE id = $1";
+db.query(query, [userInput]);
+```
+
+### Rate Limiting & DDoS Protection
+```javascript
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+app.use(limiter);
+```
+
+## Serverless with Node.js
+### AWS Lambda Example
+```javascript
+exports.handler = async (event) => {
+    return { statusCode: 200, body: "Hello from AWS Lambda" };
+};
+```
+
+## Building CLI Applications
+### Using commander.js and inquirer.js
+```javascript
+const { Command } = require("commander");
+const program = new Command();
+program.version("1.0.0").description("CLI Tool");
+program.command("greet").action(() => console.log("Hello!"));
+program.parse(process.argv);
+```
+

@@ -1,0 +1,219 @@
+# Intermediate Node.js Topics
+
+## Express.js Framework
+
+### Setting up an Express Server
+Express.js is a minimal and flexible Node.js web application framework that provides robust features for web and mobile applications.
+
+#### Example:
+```javascript
+const express = require('express');
+const app = express();
+const PORT = 3000;
+
+app.get('/', (req, res) => {
+    res.send('Hello, Express!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+```
+
+### Routing & Middleware
+Routing determines how an application responds to a client request at a particular endpoint. 
+Middleware functions are executed sequentially during the request-response cycle.
+
+#### Example:
+```javascript
+app.use((req, res, next) => {
+    console.log('Middleware executed');
+    next();
+});
+
+app.get('/user', (req, res) => {
+    res.json({ name: 'John Doe', age: 30 });
+});
+```
+
+### Request & Response Handling
+Express provides methods to handle HTTP requests and responses efficiently.
+
+#### Example:
+```javascript
+app.post('/data', (req, res) => {
+    res.status(201).json({ message: 'Data received' });
+});
+```
+
+### Error Handling in Express
+Using middleware to catch errors.
+
+#### Example:
+```javascript
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+```
+
+## Working with Databases
+
+### MongoDB & Mongoose
+Mongoose is an ODM (Object Data Modeling) library for MongoDB.
+
+#### Example:
+```javascript
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/testdb');
+
+const UserSchema = new mongoose.Schema({ name: String, age: Number });
+const User = mongoose.model('User', UserSchema);
+```
+
+### MySQL & PostgreSQL with Sequelize
+Sequelize is a promise-based Node.js ORM for MySQL, PostgreSQL, and other SQL databases.
+
+#### Example:
+```javascript
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = new Sequelize('sqlite::memory:');
+
+const User = sequelize.define('User', { name: DataTypes.STRING });
+```
+
+### Redis (Caching)
+Redis is used for caching to improve performance.
+
+#### Example:
+```javascript
+const redis = require('redis');
+const client = redis.createClient();
+client.set('key', 'value');
+client.get('key', (err, value) => console.log(value));
+```
+
+## Authentication & Authorization
+
+### JWT Authentication
+JWT (JSON Web Token) is used for stateless authentication.
+
+#### Example:
+```javascript
+const jwt = require('jsonwebtoken');
+const token = jwt.sign({ userId: 1 }, 'secret', { expiresIn: '1h' });
+```
+
+### OAuth & Social Logins
+OAuth is used for third-party authentication (Google, Facebook, etc.).
+
+### Session-based Authentication
+Using sessions to store user login state.
+
+## Middleware in Express.js
+
+### Built-in Middleware
+Example: `express.json()` for parsing JSON.
+
+### Custom Middleware
+Example:
+```javascript
+app.use((req, res, next) => {
+    console.log(`Request made to ${req.url}`);
+    next();
+});
+```
+
+### Third-party Middleware
+Example: `cors` for handling cross-origin requests.
+
+## REST API Development
+
+### Designing RESTful APIs
+Designing endpoints following REST principles.
+
+### CRUD Operations
+Example:
+```javascript
+app.post('/users', (req, res) => {
+    res.send('User created');
+});
+```
+
+### API Versioning
+Managing API versions using URL prefixes.
+
+### Rate Limiting
+Using `express-rate-limit` to prevent abuse.
+
+## Template Engines
+
+### EJS
+Example:
+```javascript
+app.set('view engine', 'ejs');
+app.get('/', (req, res) => {
+    res.render('index', { title: 'Home' });
+});
+```
+
+### Handlebars & Pug
+Other popular template engines for Express.js.
+
+## Handling File Uploads
+
+### Using Multer
+Multer handles file uploads in Node.js.
+
+#### Example:
+```javascript
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.send('File uploaded');
+});
+```
+
+### Cloud Storage (AWS S3, Cloudinary)
+Uploading files to cloud storage providers.
+
+## WebSockets & Real-time Communication
+
+### Using socket.io
+Example:
+```javascript
+const io = require('socket.io')(3000);
+io.on('connection', socket => {
+    console.log('New user connected');
+});
+```
+
+### Real-time Chat Applications
+Implementing real-time chat using WebSockets.
+
+## Working with Process and Child Processes
+
+### child_process Module
+Executing system commands in Node.js.
+
+#### Example:
+```javascript
+const { exec } = require('child_process');
+exec('ls', (error, stdout) => console.log(stdout));
+```
+
+## Node.js Streams & Buffers
+
+### Readable & Writable Streams
+Example:
+```javascript
+const fs = require('fs');
+const readStream = fs.createReadStream('file.txt');
+readStream.pipe(process.stdout);
+```
+
+### Piping Streams
+Using `pipe()` to connect streams efficiently.
+
+---
+

@@ -1,0 +1,57 @@
+Here’s a breakdown of the most important and commonly used **HTTP status codes**, categorized by their types:
+
+---
+
+## **1xx - Informational Responses**
+These indicate that the request has been received and is being processed.
+
+- **100 Continue** → The server acknowledges the request headers and expects the client to continue sending the request body.
+- **101 Switching Protocols** → The server is switching to a different protocol as requested by the client (e.g., switching from HTTP to WebSockets).
+
+---
+
+## **2xx - Success Responses**
+These indicate that the request was successfully processed.
+
+- **200 OK** → The request was successful, and the response contains the requested data.
+- **201 Created** → The request was successful, and a new resource was created (e.g., after a POST request).
+- **202 Accepted** → The request has been accepted for processing, but it is not yet completed.
+- **204 No Content** → The request was successful, but there is no content in the response (commonly used for DELETE requests).
+
+---
+
+## **3xx - Redirection Responses**
+These indicate that further action is required to complete the request.
+
+- **301 Moved Permanently** → The resource has been permanently moved to a new URL. Clients should use the new URL in the future.
+- **302 Found** → The resource is temporarily available at a different URL.
+- **304 Not Modified** → The client’s cached version of the resource is still valid, so no need to re-download it.
+
+---
+
+## **4xx - Client Error Responses**
+These indicate issues caused by the client’s request.
+
+- **400 Bad Request** → The request is invalid or cannot be processed due to malformed syntax.
+- **401 Unauthorized** → Authentication is required or has failed.
+- **403 Forbidden** → The client does not have permission to access the requested resource.
+- **404 Not Found** → The requested resource does not exist.
+- **405 Method Not Allowed** → The HTTP method used is not allowed for the requested resource (e.g., using `POST` on a `GET`-only route).
+- **408 Request Timeout** → The client took too long to send the request.
+- **409 Conflict** → The request conflicts with the current state of the resource (e.g., trying to create a duplicate entry).
+- **413 Payload Too Large** → The request body is too large for the server to process.
+- **429 Too Many Requests** → The client has sent too many requests in a short period (rate-limiting).
+
+---
+
+## **5xx - Server Error Responses**
+These indicate that the server failed to process a valid request.
+
+- **500 Internal Server Error** → A generic error indicating something went wrong on the server.
+- **502 Bad Gateway** → The server received an invalid response from an upstream server.
+- **503 Service Unavailable** → The server is temporarily unavailable (e.g., due to maintenance or overload).
+- **504 Gateway Timeout** → The server did not receive a timely response from an upstream server.
+
+---
+
+These are the most common HTTP status codes you’ll encounter while working with web applications, APIs, and servers. Let me know if you need more details! 🚀
